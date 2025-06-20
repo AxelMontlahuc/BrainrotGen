@@ -27,7 +27,7 @@ export default function Docs () {
                             <li>Language: Typescript</li>
                             <li>Tailwind CSS</li>
                             <li>Shadcn</li>
-                            <li>Hackclub's AI endpoint</li>
+                            <li>Hackclub AI endpoint</li>
                             <li>Cloudlare AI workers</li>
                         </ul>
 

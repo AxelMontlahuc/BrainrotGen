@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { FocusCards } from "@/components/ui/focus-cards";
+import Link from "next/link";
 
 export default function Home() {
   const brainrot = [
@@ -37,10 +38,10 @@ export default function Home() {
           <p className="text-2xl font-thin">Generate italian brainrot videos in clicks with AI!</p>
           <div>
             <Button className="m-4" variant="outline">
-              <a href="/docs">Learn More</a>
+              <Link href="/docs">Learn More</Link>
             </Button>
             <Button className="m-4">
-              <a href="/generate">Generate</a>
+              <Link href="/generate">Generate</Link>
             </Button>
           </div>
         </div>
