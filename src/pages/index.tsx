@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <>
       <main>
-        <div className="flex flex-col items-center m-[80px]">
+        <div className="flex flex-col items-center m-[80px] mt-[60px]">
           <h1 className="text-6xl m-[10px]">BrainrotGen</h1>
           <p className="text-2xl font-thin">Generate italian brainrot videos in clicks with AI!</p>
           <div>
@@ -44,7 +44,7 @@ export default function Home() {
             </Button>
           </div>
         </div>
-        <div className="m-[40px]">
+        <div className="m-[40px] mb-[80px]">
           <FocusCards cards={brainrot} />
         </div>
       </main>

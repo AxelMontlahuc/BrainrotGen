@@ -13,22 +13,22 @@ export default function App({ Component, pageProps }: AppProps) {
       enableSystem
       disableTransitionOnChange
     >
-      <div className="flex justify-center items-center border-b-1 border-white">
-        <NavigationMenu className="m-[20px]">
-              <NavigationMenuList>
+      <div className="flex justify-center items-center border-white">
+        <NavigationMenu className="w-[1000px]">
+              <NavigationMenuList className="mt-[20px] pr-[50px] pl-[50px] w-[360px] flex justify-between dark:bg-input/70 rounded-md">
                 <NavigationMenuItem>
                   <NavigationMenuLink className="items-center" asChild>
-                    <Link className="w-[100px]" href="/">Home</Link>
+                    <Link href="/">Home</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuLink className="items-center" asChild>
-                  <Link className="w-[100px]" href="/generate">Generate</Link>
+                  <Link href="/generate">Generate</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuLink className="items-center" asChild>
-                    <Link className="w-[100px]" href="/docs">Learn More</Link>
+                    <Link href="/docs">Learn More</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>

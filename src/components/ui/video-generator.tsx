@@ -153,7 +153,8 @@ export default function VideoGenerator() {
           <Textarea
             value={script}
             onChange={(e) => setScript(e.target.value)}
-            className="w-[620px] h-[580px]"
+            className="w-[620px] h-[580px]" 
+            placeholder="Type in what you want to generate in english, e.g. 'A shark wearing sneakers on the beach' for Tralalero Tralala"
           />
           <Button onClick={generateVideo} disabled={loading} className="w-[620px] h-[40px]">
             {loading ? "Generating..." : "Generate Media"}
