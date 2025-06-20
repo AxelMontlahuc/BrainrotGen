@@ -47,7 +47,7 @@ export default function VideoGenerator() {
     img.src = imageURL;
     await new Promise((r) => (img.onload = r));
 
-    const audioScript = await returnScript(script);
+    const audioScript = await returnScript(`Generate a 3D goofy image of: " + script + ". The image should be colorful, surreal, and have a brainrot aesthetic. It should not contain any text or logos. The image should be suitable for use as a background for a video. Portrait mode.`);
     const audioURL = await returnAudioURL(audioScript);
     const audio = new Audio(audioURL);
 
@@ -58,10 +58,25 @@ export default function VideoGenerator() {
     sourceNode.connect(audioCtx.destination);
 
     const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext("2d");
-    ctx?.drawImage(img, 0, 0, img.width, img.height);
+    canvas.width = 360;
+    canvas.height = 640;
+    const ctx = canvas.getContext("2d")!;
+
+    const cw = canvas.width
+    const ch = canvas.height
+    const iw = img.width
+    const ih = img.height
+
+    const scale = Math.max(cw / iw, ch / ih)
+    const sw = cw / scale
+    const sh = ch / scale
+    const sx = (iw - sw) / 2
+    const sy = (ih - sh) / 2
+    ctx.drawImage(
+      img,
+      sx, sy, sw, sh,
+      0,  0,  cw, ch
+    )
 
     const videoStream = canvas.captureStream(30);
     const audioTrack = destination.stream.getAudioTracks()[0];

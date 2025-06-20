@@ -8,11 +8,6 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    if (req.method !== "POST") {
-        res.status(405).json({ error: "Method not allowed" });
-        return;
-    }
-
     const { script } = req.body as GenerateImageRequestBody;
     const API_URL =
         "https://api.cloudflare.com/client/v4/accounts/36678f2e1c78d0ed324710680472f2c1/ai/run/@cf/black-forest-labs/flux-1-schnell";
@@ -27,19 +22,8 @@ export default async function handler(
         body: JSON.stringify({ prompt: script }),
     });
 
-    if (!cfRes.ok) {
-        const text = await cfRes.text();
-        res.status(500).json({ error: "Cloudflare error", details: text });
-        return;
-    }
-
     const data = await cfRes.json();
-
     const image = data.result?.image;
-    if (!image) {
-        res.status(500).json({ error: "No image returned from Cloudflare", details: data });
-        return;
-    }
 
     res.status(200).json({ image: image });
 }
