@@ -39,7 +39,6 @@ export default async function handler(
     }
 
     const data = await cfRes.json();
-    console.log("Cloudflare API response:", data); 
 
     const image = data.result?.image;
     if (!image) {
