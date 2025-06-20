@@ -51,11 +51,27 @@ export default function VideoGenerator() {
     const audioURL = await returnAudioURL(audioScript);
     const audio = new Audio(audioURL);
 
+    const bgMusic = new Audio("/bgmusic.mp3")
+    bgMusic.loop = true
+    await new Promise((r) => (bgMusic.onloadedmetadata = r))
+
     const audioCtx = new AudioContext();
     const sourceNode = audioCtx.createMediaElementSource(audio);
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.value = 1.0;
+    sourceNode.connect(gainNode);
+
+    const bgSource = audioCtx.createMediaElementSource(bgMusic);
+    const bgGain = audioCtx.createGain();
+    bgGain.gain.value = 0.2;
+    bgSource.connect(bgGain);
+
     const destination = audioCtx.createMediaStreamDestination();
-    sourceNode.connect(destination);
-    sourceNode.connect(audioCtx.destination);
+    gainNode.connect(destination);
+    bgGain.connect(destination);
+
+    gainNode.connect(audioCtx.destination);
+    bgGain.connect(audioCtx.destination);
 
     const canvas = document.createElement("canvas");
     canvas.width = 360;
@@ -96,7 +112,11 @@ export default function VideoGenerator() {
     recorder.start();
     await audioCtx.resume();
     audio.play();
-    audio.onended = () => recorder.stop();
+    bgMusic.play();
+    audio.onended = () => {
+      recorder.stop();
+      bgMusic.pause();
+    }
 
     setLoading(false);
   };
