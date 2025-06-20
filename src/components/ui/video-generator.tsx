@@ -12,6 +12,17 @@ async function returnImageURL(script: string) {
   return `data:image/jpeg;base64,${imgData.image}`;
 }
 
+async function returnScript(prompt: string): Promise<string> {
+  const res = await fetch("/api/generate-script", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ input: prompt }),
+  });
+  if (!res.ok) throw new Error(await res.text());
+  const { script } = await res.json();
+  return script;
+}
+
 async function returnAudioURL(script: string) {
   const audioRes = await fetch("/api/generate-audio", {
     method: "POST",
@@ -36,7 +47,8 @@ export default function VideoGenerator() {
     img.src = imageURL;
     await new Promise((r) => (img.onload = r));
 
-    const audioURL = await returnAudioURL(script);
+    const audioScript = await returnScript(script);
+    const audioURL = await returnAudioURL(audioScript);
     const audio = new Audio(audioURL);
 
     const audioCtx = new AudioContext();
@@ -77,26 +89,26 @@ export default function VideoGenerator() {
   return (
     <main className="flex flex-col items-center m-8">
       <h1 className="text-4xl mb-4">Generate Brainrot Media</h1>
-      <div className="flex space-x-8">
-        <div className="w-80 border bg-gray-100 flex flex-col items-center p-4 space-y-2">
+      <div className="flex justify-between w-[1000px]">
+        <div className="w-[360px] h-[640px] border bg-gray-100 flex flex-col items-center rounded space-y-2">
           {videoUrl ? (
-            <img
+            <video
               src={videoUrl}
-              alt="Generated"
-              className="w-full h-auto rounded"
+              controls
+              className="w-[360px] h-[640px] rounded"
             />
           ) : (
-            <p>{loading ? "Generating image..." : "No image generated yet."}</p>
+            <p>{loading ? "Generating media…" : "No media generated yet."}</p>
           )}
         </div>
 
-        <div className="flex flex-col">
+        <div className="flex flex-col justify-between">
           <Textarea
             value={script}
             onChange={(e) => setScript(e.target.value)}
-            className="w-96 h-80 mb-4"
+            className="w-[620px] h-[580px]"
           />
-          <Button onClick={generateVideo} disabled={loading}>
+          <Button onClick={generateVideo} disabled={loading} className="w-[620px] h-[40px]">
             {loading ? "Generating..." : "Generate Media"}
           </Button>
         </div>

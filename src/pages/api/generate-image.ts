@@ -4,11 +4,6 @@ interface GenerateImageRequestBody {
     script: string;
 }
 
-interface CloudflareResponse {
-    image?: string;
-    [key: string]: any;
-}
-
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
