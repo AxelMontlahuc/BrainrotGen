@@ -23,14 +23,26 @@ async function returnScript(prompt: string): Promise<string> {
   return script;
 }
 
-async function returnAudioURL(script: string) {
+async function returnAudioURL(script: string): Promise<string> {
   const audioRes = await fetch("/api/generate-audio", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ script }),
   });
+  if (!audioRes.ok) {
+    const err = await audioRes.text();
+    console.error("generate-audio failed:", err);
+    throw new Error(err || "generate-audio error");
+  }
+
   const audioData = await audioRes.json();
-  return `data:audio/mpeg;base64,${audioData.result.audio}`;
+  const b64 = audioData.result?.audio ?? audioData.audio;
+  if (typeof b64 !== "string") {
+    console.error("unexpected audio payload:", audioData);
+    throw new Error("No audio returned from API");
+  }
+
+  return `data:audio/mpeg;base64,${b64}`;
 }
 
 export default function VideoGenerator() {
@@ -63,15 +75,12 @@ export default function VideoGenerator() {
 
     const bgSource = audioCtx.createMediaElementSource(bgMusic);
     const bgGain = audioCtx.createGain();
-    bgGain.gain.value = 0.2;
+    bgGain.gain.value = 0.3;
     bgSource.connect(bgGain);
 
     const destination = audioCtx.createMediaStreamDestination();
     gainNode.connect(destination);
     bgGain.connect(destination);
-
-    gainNode.connect(audioCtx.destination);
-    bgGain.connect(audioCtx.destination);
 
     const canvas = document.createElement("canvas");
     canvas.width = 360;
@@ -88,6 +97,7 @@ export default function VideoGenerator() {
     const sh = ch / scale
     const sx = (iw - sw) / 2
     const sy = (ih - sh) / 2
+
     ctx.drawImage(
       img,
       sx, sy, sw, sh,
@@ -107,6 +117,7 @@ export default function VideoGenerator() {
       const videoBlob = new Blob(chunks, { type: "video/webm" });
       const videoObjectUrl = URL.createObjectURL(videoBlob);
       setVideoUrl(videoObjectUrl);
+      setLoading(false);
     };
 
     recorder.start();
@@ -118,19 +129,20 @@ export default function VideoGenerator() {
       bgMusic.pause();
     }
 
-    setLoading(false);
   };
 
   return (
-    <main className="flex flex-col items-center m-8">
-      <h1 className="text-4xl mb-4">Generate Brainrot Media</h1>
-      <div className="flex justify-between w-[1000px]">
-        <div className="w-[360px] h-[640px] border bg-gray-100 flex flex-col items-center rounded space-y-2">
+    <main className="flex flex-col items-center">
+      <div className="flex flex-col items-center mt-[40px]">
+        <h1 className="text-6xl m-[10px]">Generate Italian Brainrot</h1>
+      </div>
+      <div className="flex justify-between w-[1000px] m-[40px] mb-[80px]">
+        <div className="w-[360px] h-[640px] border dark:bg-input/30 flex flex-col justify-center items-center rounded-md space-y-2">
           {videoUrl ? (
             <video
               src={videoUrl}
               controls
-              className="w-[360px] h-[640px] rounded"
+              className="w-[360px] h-[640px] rounded-md"
             />
           ) : (
             <p>{loading ? "Generating media…" : "No media generated yet."}</p>

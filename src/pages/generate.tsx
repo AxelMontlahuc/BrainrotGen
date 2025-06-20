@@ -1,4 +1,3 @@
-// Simplify page to only render client-side VideoGenerator and remove server-side ffmpeg instantiation causing errors
 import dynamic from 'next/dynamic';
 
 const VideoGenerator = dynamic(
