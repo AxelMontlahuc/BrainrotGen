@@ -45,7 +45,7 @@ export default function VideoGenerator() {
     setLoading(true);
 
     try {
-      const audioScript = await returnScript(`Generate a script for a tiktok video about the following user input: ${script}. If the user input is empty, generate something by yourself. It will be directly used to generate a video so give the script only, no formulations like "Here is the script" or "There is no user input". It needs to be 30 seconds long max so avoid doing more than 100 words.`);
+      const audioScript = await returnScript(`Generate a script for a tiktok video (in a story telling style) about the following user input: ${script}. If the user input is empty, generate something by yourself. It will be directly used to generate a video so give the script only, no comments or explanations like "Here is the script" or "Since there is no user input I will generate it by myself". It needs to be 30 seconds long max so avoid doing more than 100 words. If there is alread a script as a user input just return it as it is, no comments or explanations.`);
       const audioURL = await returnAudioURL(audioScript);
       const audio = new Audio(audioURL);
 

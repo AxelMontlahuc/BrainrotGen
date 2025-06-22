@@ -35,4 +35,4 @@ To run this project locally, follow these steps:
     ```
 
 # Goal
-This website allows you to generate italian brainrot content thanks to Cloudflare AI Workers and Hackclub's AI endpoint. 
+This website allows you to generate italian brainrot or subway surfer brainrot thanks to Cloudflare AI Workers and Hackclub's AI endpoint. 

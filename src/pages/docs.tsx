@@ -10,7 +10,7 @@ export default function Docs () {
                         <p>This website is actually a project for <a href="https://shipwrecked.hackclub.com" className="text-blue-500 hover:underline">Shipwrecked</a>, a hackathon organized by <a href="https://hackclub.com/" className="text-blue-500 hover:underline">Hack Club</a>. <br/> You can find the code on my <a href="https://github.com/AxelMontlahuc" className="text-blue-500">GitHub</a>. </p>
 
                         <h2 className="text-4xl mt-8 mb-4">About BrainrotGen</h2>
-                        <p className="mb-4">BrainrotGen is designed to allow people to generate AI brainrot videos (especially italian brainrot) therefore making this type of mass short content creation for platforms like Instagram, TikTok or YouTube accessible to persons with no coding skills. <br/> The website is fully free and will never be paid. There may be rate limits with APIs though so if you cannot generate content it may be the reason. </p>
+                        <p className="mb-4">BrainrotGen is designed to allow people to generate AI brainrot videos (especially italian brainrot and subway surfer videos) therefore making this type of mass short content creation for platforms like Instagram, TikTok or YouTube accessible to persons with no coding skills. <br/> The website is fully free and will never be paid. There may be rate limits with APIs though so if you cannot generate content it may be the reason. </p>
 
                         <h2 className="text-4xl mt-8 mb-4">How it Works</h2>
                         <p className="mb-4"> The website is still in its early stages so the way it works is not optimal yet. <br/> The content creation can be divided into 4 parts: </p>
@@ -45,7 +45,6 @@ export default function Docs () {
                             <li>Enhance the AIs through better prompts and by investing in AIs that are actually good (ChatGPT, Imagen-3, ElevenLabs)</li>
                             <li>User accounts and saved projects.</li>
                             <li>More customization options for video styles.</li>
-                            <li>More video styles (currently there is only italian brainrot)</li>
                             <li>Integration with social media platforms for easy posting.</li>
                             <li>Community features for sharing and discovering creations.</li>
                         </ul>
