@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 
 const VideoGenerator = dynamic(
-  () => import('@/components/ui/video-generator'),
+  () => import('@/components/italian-generator'),
   { ssr: false, loading: () => <p>Loading video generator...</p> }
 );
 

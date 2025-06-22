@@ -15,7 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
     >
       <div className="flex justify-center items-center border-white">
         <NavigationMenu className="w-[1000px]">
-              <NavigationMenuList className="mt-[20px] pr-[50px] pl-[50px] w-[360px] flex justify-between dark:bg-input/70 rounded-md">
+              <NavigationMenuList className="mt-[20px] pr-[50px] pl-[50px] w-[600px] flex justify-between dark:bg-input/70 rounded-md">
                 <NavigationMenuItem>
                   <NavigationMenuLink className="items-center" asChild>
                     <Link href="/">Home</Link>
@@ -23,7 +23,12 @@ export default function App({ Component, pageProps }: AppProps) {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuLink className="items-center" asChild>
-                  <Link href="/generate">Generate</Link>
+                  <Link href="/italian">Italian Brainrot</Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink className="items-center" asChild>
+                  <Link href="/subwaysurfer">Subway Surfer Brainrot</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
