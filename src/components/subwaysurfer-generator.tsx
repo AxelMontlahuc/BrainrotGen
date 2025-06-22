@@ -44,63 +44,71 @@ export default function VideoGenerator() {
     if (loading) return;
     setLoading(true);
 
-    const audioScript = await returnScript(`Generate a script for a tiktok video about the follwing user input: ${script}. If the user in put is empty, generate something by yourself. It will be directly used to generate a video so give the script only, no formulations like "Here is the script". It needs to be 30 seconds long max so avoir doing more than 100 words. Rememeber to only reply with the script and nothing else.`);
-    const audioURL = await returnAudioURL(audioScript);
-    const audio = new Audio(audioURL);
+    try {
+      const audioScript = await returnScript(`Generate a script for a tiktok video about the following user input: ${script}. If the user input is empty, generate something by yourself. It will be directly used to generate a video so give the script only, no formulations like "Here is the script" or "There is no user input". It needs to be 30 seconds long max so avoid doing more than 100 words.`);
+      const audioURL = await returnAudioURL(audioScript);
+      const audio = new Audio(audioURL);
 
-    const audioCtx = new AudioContext();
-    const sourceNode = audioCtx.createMediaElementSource(audio);
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.value = 1.0;
-    sourceNode.connect(gainNode);
+      const audioCtx = new AudioContext();
+      const sourceNode = audioCtx.createMediaElementSource(audio);
+      const destination = audioCtx.createMediaStreamDestination();
+      sourceNode.connect(destination);
 
-    const destination = audioCtx.createMediaStreamDestination();
-    gainNode.connect(destination);
+      const backgroundVideo = document.createElement("video");
+      backgroundVideo.src = "/subwaysurferclip.mp4";
+      backgroundVideo.loop = true;
+      backgroundVideo.preload = "auto";
 
-    const canvas = document.createElement("canvas");
-    canvas.width = 360;
-    canvas.height = 640;
-    const ctx = canvas.getContext("2d")!;
+      await new Promise((resolve) => {
+        backgroundVideo.onloadeddata = resolve;
+      });
 
-    const backgroundVideo = document.createElement("video");
-    backgroundVideo.src = "/subwaysurferclip.mp4";
-    backgroundVideo.loop = true;
-    await backgroundVideo.play();
+      const canvas = document.createElement("canvas");
+      canvas.width = 360;
+      canvas.height = 640;
+      const ctx = canvas.getContext("2d");
 
-    const videoStream = canvas.captureStream(30);
-    const audioTrack = destination.stream.getAudioTracks()[0];
-    videoStream.addTrack(audioTrack);
+      const canvasStream = canvas.captureStream(24);
 
-    const chunks: Blob[] = [];
-    const recorder = new MediaRecorder(videoStream, {
-      mimeType: "video/webm; codecs=vp8, opus",
-    });
-    recorder.ondataavailable = (e) => chunks.push(e.data);
-    recorder.onstop = () => {
-      const videoBlob = new Blob(chunks, { type: "video/webm" });
-      const videoObjectUrl = URL.createObjectURL(videoBlob);
-      setVideoUrl(videoObjectUrl);
+      const audioTrack = destination.stream.getAudioTracks()[0];
+      canvasStream.addTrack(audioTrack);
+
+      const chunks: Blob[] = [];
+      const recorder = new MediaRecorder(canvasStream, {
+        mimeType: "video/webm; codecs=vp8, opus",
+      });
+
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+
+      recorder.onstop = () => {
+        const videoBlob = new Blob(chunks, { type: "video/webm" });
+        const videoObjectUrl = URL.createObjectURL(videoBlob);
+
+        setVideoUrl(videoObjectUrl);
+        setLoading(false);
+      };
+
+      recorder.start();
+      await audioCtx.resume();
+      audio.play();
+      backgroundVideo.play();
+
+      const drawFrame = () => {
+        if (!backgroundVideo.paused && !backgroundVideo.ended) {
+          ctx?.drawImage(backgroundVideo, 0, 0, canvas.width, canvas.height);
+          requestAnimationFrame(drawFrame);
+        }
+      };
+      drawFrame();
+
+      audio.onended = () => {
+        recorder.stop();
+        backgroundVideo.pause();
+      };
+    } catch (error) {
+      console.error("Error generating video:", error);
       setLoading(false);
-    };
-
-    recorder.start();
-    await audioCtx.resume();
-    audio.play();
-
-    const drawFrame = () => {
-      ctx.drawImage(backgroundVideo, 0, 0, canvas.width, canvas.height);
-
-      if (!backgroundVideo.ended) {
-        requestAnimationFrame(drawFrame);
-      }
     }
-
-    drawFrame();
-
-    audio.onended = () => {
-      recorder.stop();
-    }
-
   };
 
   return (
