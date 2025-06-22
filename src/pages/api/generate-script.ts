@@ -5,7 +5,7 @@ export default async function handler(
     res: NextApiResponse
 ) {
     const { input } = req.body as { input: string }
-    const prompt = "I made a website that generates italian brainrot media. For this the user enters what it wants to see in the video and I have to generate a script for the video in italian. The concept of brainrot is talking about nonsense and being goofy (not serious at all, errors are expected). The script has to be pretty short (60 words max). Don't add anything to the script in english (no here is the script or let me know if you want refinements) as it will be automatically used. Please generate the script in italian right away, the user input is: " + input
+    const prompt = input;
 
     const response = await fetch("https://ai.hackclub.com/chat/completions", {
         method: "POST",
