@@ -41,7 +41,7 @@ export default function Home() {
               <Link href="/docs">Learn More</Link>
             </Button>
             <Button className="m-4">
-              <Link href="/generate">Generate</Link>
+              <Link href="/italian">Generate</Link>
             </Button>
           </div>
         </div>
