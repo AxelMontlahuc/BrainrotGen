@@ -54,12 +54,12 @@ export default function VideoGenerator() {
     if (loading) return;
     setLoading(true);
 
-    const imageURL = await returnImageURL(script);
+    const imageURL = await returnImageURL(`Generate a 3D goofy image of: ${script}. The image should be colorful, surreal, and have a brainrot aesthetic. It should not contain any text or logos. The image should be suitable for use as a background for a video. Portrait mode.`);
     const img = new Image();
     img.src = imageURL;
     await new Promise((r) => (img.onload = r));
 
-    const audioScript = await returnScript(`Generate a 3D goofy image of: " + script + ". The image should be colorful, surreal, and have a brainrot aesthetic. It should not contain any text or logos. The image should be suitable for use as a background for a video. Portrait mode.`);
+    const audioScript = await returnScript(`Generate a brainrot script in italian about: ${script}. Don't say anything in english, don't give any instructions just generate the script as it will be directly fed to a TTS model for a brainrot video. Make this as goofy as possible and make sure it is in italian. `);
     const audioURL = await returnAudioURL(audioScript);
     const audio = new Audio(audioURL);
 
